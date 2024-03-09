@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IngrediantCategory {
+public class IngredientCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
