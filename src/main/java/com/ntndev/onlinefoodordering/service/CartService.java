@@ -3,6 +3,7 @@ package com.ntndev.onlinefoodordering.service;
 import com.ntndev.onlinefoodordering.dto.request.AddCartItemRequest;
 import com.ntndev.onlinefoodordering.model.Cart;
 import com.ntndev.onlinefoodordering.model.CartItem;
+import com.ntndev.onlinefoodordering.model.Order;
 
 public interface CartService {
 
@@ -14,9 +15,10 @@ public interface CartService {
 
         Cart findCartById(Long id) throws Exception;
 
-        Cart findCartByUserId(String jwt) throws Exception;
+        Cart findCartByUserId(Long userId) throws Exception;
 
-        Cart clearCart(String jwt) throws Exception;
+        Cart clearCart(Long userId) throws Exception;
+
 
 
 }

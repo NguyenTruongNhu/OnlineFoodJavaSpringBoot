@@ -40,6 +40,8 @@ public class AdminFoodController {
     }
 
     @DeleteMapping("/delete/{id}")
+
+
     public ResponseEntity<MessageResponse> deleteFood(
             @PathVariable Long id,
             @RequestHeader("Authorization") String jwt) throws Exception {
