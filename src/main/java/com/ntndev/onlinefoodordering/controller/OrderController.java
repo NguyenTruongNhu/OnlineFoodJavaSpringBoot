@@ -2,10 +2,12 @@ package com.ntndev.onlinefoodordering.controller;
 
 import com.ntndev.onlinefoodordering.dto.request.AddCartItemRequest;
 import com.ntndev.onlinefoodordering.dto.request.OrderRequest;
+import com.ntndev.onlinefoodordering.dto.response.PaymentResponse;
 import com.ntndev.onlinefoodordering.model.CartItem;
 import com.ntndev.onlinefoodordering.model.Order;
 import com.ntndev.onlinefoodordering.model.User;
 import com.ntndev.onlinefoodordering.service.OrderService;
+import com.ntndev.onlinefoodordering.service.PaymentService;
 import com.ntndev.onlinefoodordering.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,15 +26,21 @@ public class OrderController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PaymentService paymentService;
+
     @PostMapping("/order")
-    public ResponseEntity<Order> createOrder(
+    public ResponseEntity<PaymentResponse> createOrder(
             @RequestBody OrderRequest req,
             @RequestHeader("Authorization") String jwt) throws Exception {
 
 
         User user = userService.findUserByJwtToken(jwt);
         Order order = orderService.createOrder(req,user);
-        return new ResponseEntity<>(order, HttpStatus.CREATED);
+
+        PaymentResponse res = paymentService.createPaymentLink(order);
+
+        return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
     @GetMapping("/order/user")

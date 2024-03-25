@@ -30,7 +30,7 @@ public class CartController {
             @RequestHeader("Authorization") String jwt) throws Exception {
 
 
-        CartItem cartItem = cartService.addItemToCart(req,jwt);
+        CartItem cartItem = cartService.addItemToCart(req, jwt);
         return new ResponseEntity<>(cartItem, HttpStatus.CREATED);
     }
 
@@ -50,7 +50,7 @@ public class CartController {
             @RequestHeader("Authorization") String jwt) throws Exception {
 
 
-        Cart cart = cartService.removeItemFromCart(id,jwt);
+        Cart cart = cartService.removeItemFromCart(id, jwt);
         return new ResponseEntity<>(cart, HttpStatus.OK);
     }
 
@@ -67,7 +67,7 @@ public class CartController {
     @GetMapping("/cart")
     public ResponseEntity<Cart> findUserCart(
             @RequestHeader("Authorization") String jwt) throws Exception {
-User user = userService.findUserByJwtToken(jwt);
+        User user = userService.findUserByJwtToken(jwt);
 
         Cart cart = cartService.findCartByUserId(user.getId());
         return new ResponseEntity<>(cart, HttpStatus.OK);
