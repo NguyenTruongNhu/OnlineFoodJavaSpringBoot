@@ -28,34 +28,26 @@ public class CartServiceImpl implements CartService{
     @Autowired
     private FoodService foodService;
 
+
     @Override
     public CartItem addItemToCart(AddCartItemRequest req, String jwt) throws Exception {
         User user = userService.findUserByJwtToken(jwt);
-
         Food food = foodService.findFoodById(req.getFoodId());
-
         Cart cart = cartRepository.findByCustomerId(user.getId());
-
-
         for (CartItem cartItem: cart.getItems()){
             if(cartItem.getFood().equals(food)){
                 int newQuantity = cartItem.getQuantity() + req.getQuantity();
                 return updateCartItemQuantity(cartItem.getId(), newQuantity);
             }
         }
-
         CartItem newCartItem = new CartItem();
         newCartItem.setFood(food);
         newCartItem.setCart(cart);
         newCartItem.setQuantity(req.getQuantity());
         newCartItem.setIngredients(req.getIngredients());
         newCartItem.setTotalPrice(req.getQuantity() * food.getPrice());
-
         CartItem savedCartItem = cartItemRepository.save(newCartItem);
-
         cart.getItems().add(savedCartItem);
-
-
         return savedCartItem;
     }
 
@@ -63,7 +55,7 @@ public class CartServiceImpl implements CartService{
     public CartItem updateCartItemQuantity(Long cartItemId, int quantity) throws Exception {
         Optional<CartItem> cartItemOtp = cartItemRepository.findById(cartItemId);
         if(cartItemOtp.isEmpty()){
-            throw new Exception("cart item not found");
+            throw new Exception("cart item not found with id= ");
         }
         CartItem item = cartItemOtp.get();
 
@@ -88,7 +80,6 @@ public class CartServiceImpl implements CartService{
         cart.getItems().remove(item);
 
 
-
         return cartRepository.save(cart);
     }
 
@@ -107,7 +98,7 @@ public class CartServiceImpl implements CartService{
     public Cart findCartById(Long id) throws Exception {
         Optional<Cart> cartItemOtp = cartRepository.findById(id);
         if(cartItemOtp.isEmpty()){
-            throw new Exception("cart item not found wit id= " + id);
+            throw new Exception("cart item not found with id= " + id);
         }
         return cartItemOtp.get();
     }

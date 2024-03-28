@@ -20,4 +20,7 @@ public class Category {
     @ManyToOne
     @JsonIgnore
     private Restaurant restaurant;
+
+    public Category(long l, String vegetarian) {
+    }
 }

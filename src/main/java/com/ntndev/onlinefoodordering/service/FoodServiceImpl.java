@@ -32,12 +32,8 @@ public class FoodServiceImpl implements FoodService{
       food.setSeasonal(req.isSeasional());
       food.setVegetarian(req.isVegetarian());
       food.setCreationDate(new Date());
-
       Food savedFood = foodRepository.save(food);
-
       restaurant.getFoods().add(savedFood);
-
-
         return savedFood;
     }
 
@@ -46,13 +42,10 @@ public class FoodServiceImpl implements FoodService{
         Food food = findFoodById(foodId);
         food.setRestaurant(null);
         foodRepository.save(food);
-
-
     }
 
     @Override
     public List<Food> getRestaurantsFood(Long restaurantId, boolean isVegitarain, boolean isNonveg, boolean isSeasonal, String foodCategory) {
-
 
         List<Food> foods = foodRepository.findByRestaurantId(restaurantId);
 
@@ -73,7 +66,7 @@ public class FoodServiceImpl implements FoodService{
         return foods;
     }
 
-    private List<Food> filterByCategory(List<Food> foods, String foodCategory) {
+    List<Food> filterByCategory(List<Food> foods, String foodCategory) {
         return foods.stream().filter(food -> {
             if(food.getFoodCategory() != null){
                 return food.getFoodCategory().getName().equals(foodCategory);
@@ -98,29 +91,24 @@ public class FoodServiceImpl implements FoodService{
 
     }
 
-    @Override
-    public List<Food> searchFood(String keyword) {
-        return foodRepository.searchFood(keyword);
-    }
+//    @Override
+//    public List<Food> searchFood(String keyword) {
+//        return foodRepository.searchFood(keyword);
+//    }
 
     @Override
     public Food findFoodById(Long foodId) throws Exception {
         Optional<Food> optionalFood = foodRepository.findById(foodId);
-
         if(optionalFood.isEmpty()){
             throw new Exception("food not exist");
         }
-
-
         return optionalFood.get();
     }
 
     @Override
     public Food updateAvailibityStatus(Long foodId) throws Exception {
        Food food = findFoodById(foodId);
-
        food.setAvailable(!food.isAvailable());
-
         return foodRepository.save(food);
     }
 }

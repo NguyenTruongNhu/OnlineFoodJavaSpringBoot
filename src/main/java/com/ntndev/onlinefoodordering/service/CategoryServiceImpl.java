@@ -22,10 +22,8 @@ public class CategoryServiceImpl implements CategoryService {
     public Category createCategory(String name, Long userId) throws Exception {
         Restaurant restaurant = restaurantService.getRestaurantByUserId(userId);
         Category category = new Category();
-
         category.setName(name);
         category.setRestaurant(restaurant);
-
         return categoryRepository.save(category);
     }
 
@@ -45,4 +43,5 @@ public class CategoryServiceImpl implements CategoryService {
 
         return optionalCategory.get();
     }
+
 }

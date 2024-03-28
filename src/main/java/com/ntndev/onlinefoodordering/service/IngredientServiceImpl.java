@@ -25,23 +25,18 @@ public class IngredientServiceImpl implements IngredientsService {
     @Override
     public IngredientCategory createIngredientCategory(String name, Long restaurantId) throws Exception {
         Restaurant restaurant = restaurantService.findRestaurantById(restaurantId);
-
         IngredientCategory category = new IngredientCategory();
         category.setRestaurant(restaurant);
         category.setName(name);
-
         return ingredientCategoryRepository.save(category);
     }
 
     @Override
     public IngredientCategory findIngredientCategoryById(Long id) throws Exception {
-
         Optional<IngredientCategory> ingrediantCategory = ingredientCategoryRepository.findById(id);
-
         if(ingrediantCategory.isEmpty()){
             throw new Exception("ingredient category not found");
         }
-
         return ingrediantCategory.get();
     }
 
@@ -53,17 +48,23 @@ public class IngredientServiceImpl implements IngredientsService {
 
     @Override
     public IngredientsItem createIngredientItem(Long restaurantId, String ingredientName, Long categoryId) throws Exception {
+        // Find the restaurant
         Restaurant restaurant = restaurantService.findRestaurantById(restaurantId);
+        if (restaurant == null) {
+            throw new Exception("Restaurant not found with ID: " + restaurantId);
+        }
+        // Find the ingredient category by ID
         IngredientCategory category = findIngredientCategoryById(categoryId);
 
+        // Create the ingredient item
         IngredientsItem item = new IngredientsItem();
         item.setName(ingredientName);
         item.setRestaurant(restaurant);
         item.setCategory(category);
-
+        // Save the ingredient item
         IngredientsItem ingredient = ingredientItemRepository.save(item);
+        // Add the ingredient item to the category
         category.getIngredients().add(ingredient);
-
         return ingredient;
     }
 
@@ -76,11 +77,9 @@ public class IngredientServiceImpl implements IngredientsService {
     @Override
     public IngredientsItem updateStock(Long id) throws Exception {
         Optional<IngredientsItem> opt = ingredientItemRepository.findById(id);
-
         if(opt.isEmpty()){
             throw new Exception("ingredient not found");
         }
-
         IngredientsItem ingredientsItem = opt.get();
         ingredientsItem.setInStoke(!ingredientsItem.isInStoke());
         return ingredientItemRepository.save(ingredientsItem);

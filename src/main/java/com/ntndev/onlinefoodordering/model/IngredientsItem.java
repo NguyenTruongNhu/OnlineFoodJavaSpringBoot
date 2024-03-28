@@ -3,14 +3,13 @@ package com.ntndev.onlinefoodordering.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class IngredientsItem {
 
     @Id
@@ -27,5 +26,6 @@ public class IngredientsItem {
     private Restaurant restaurant;
 
     private boolean inStoke = true;
+
 
 }

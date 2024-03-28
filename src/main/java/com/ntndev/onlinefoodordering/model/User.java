@@ -4,15 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ntndev.onlinefoodordering.dto.RestaurantDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
@@ -38,4 +39,6 @@ public class User {
     private List<Address> addresses = new ArrayList<>();
 
 
+    public User(String johnDoe, String email, String password, USER_ROLE userRole) {
+    }
 }

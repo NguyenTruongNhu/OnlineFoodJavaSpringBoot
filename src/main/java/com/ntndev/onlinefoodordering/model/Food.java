@@ -48,4 +48,15 @@ public class Food {
     private Date creationDate;
 
 
+    public Food(long l, String vegFood, boolean b, boolean b1, boolean b2, String vegetarian) {
+    }
+
+    public Food(long l, String s, String s1) {
+    }
+
+    public Food(long l, String s, String s1, boolean b) {
+    }
+
+    public Food(long l, String burger, String s1, long l1) {
+    }
 }

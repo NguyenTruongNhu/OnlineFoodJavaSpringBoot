@@ -39,30 +39,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(OrderRequest order, User user) throws Exception {
-
         Address shippAddress = order.getDeliveryAddress();
-
         Address savedAddress = addressRepository.save(shippAddress);
-
         if (!user.getAddresses().contains(savedAddress)) {
             user.getAddresses().add(savedAddress);
             userRepository.save(user);
         }
-
         Restaurant restaurant = restaurantService.findRestaurantById(order.getRestaurantId());
-
         Order createOrder = new Order();
-
         createOrder.setCustomer(user);
         createOrder.setCreateAt(new Date());
         createOrder.setOrderStatus("PENDING");
         createOrder.setDeliveryAddress(savedAddress);
         createOrder.setRestaurant(restaurant);
-
         Cart cart = cartService.findCartByUserId(user.getId());
-
         List<OrderItem> orderItems = new ArrayList<>();
-
         for (CartItem cartItem : cart.getItems()) {
             OrderItem orderItem = new OrderItem();
             orderItem.setFood(cartItem.getFood());
@@ -72,17 +63,12 @@ public class OrderServiceImpl implements OrderService {
             OrderItem savedOrderItem = orderItemRepository.save(orderItem);
             orderItems.add(savedOrderItem);
         }
-
         Long totalPrice = cartService.calculateCartTotals(cart);
         createOrder.setItems(orderItems);
         createOrder.setTotalPrice(totalPrice);
-
         Order savedOrder = orderRepository.save(createOrder);
-
         restaurant.getOrders().add(savedOrder);
-
         return createOrder;
-
     }
 
     @Override
@@ -99,17 +85,16 @@ public class OrderServiceImpl implements OrderService {
         Order order = findOrderById(orderId);
         if (orderStatus.equals("OUT_FOR_DELIVERY") || orderStatus.equals("DELIVERED") || orderStatus.equals("COMPLETED") || orderStatus.equals("PENDING")) {
             order.setOrderStatus(orderStatus);
-            return orderRepository.save(order);
-
-
+            Order updatedOrder = orderRepository.save(order);
+            if (updatedOrder == null) {
+                throw new Exception("Failed to update order");
+            }
         }
-
         throw new Exception("Please select a valid order status");
     }
 
     @Override
     public void cancelOrder(Long orderId) throws Exception {
-        Order order = findOrderById(orderId);
         orderRepository.deleteById(orderId);
     }
 

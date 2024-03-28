@@ -31,9 +31,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     public Restaurant createRestaurant(CreateRestaurantRequest req, User user) {
 
         Address address = addressRepository.save(req.getAddress());
-
         Restaurant restaurant = new Restaurant();
-
         restaurant.setAddress(address);
         restaurant.setContactInformation(req.getContactInformation());
         restaurant.setCuisineType(req.getCuisineType());
@@ -43,14 +41,12 @@ public class RestaurantServiceImpl implements RestaurantService{
         restaurant.setOpeningHours(req.getOpeningHours());
         restaurant.setRegistrationDate(LocalDateTime.now());
         restaurant.setOwner(user);
-
         return restaurantRepository.save(restaurant);
     }
 
     @Override
     public Restaurant updateRestaurant(Long restaurantId, CreateRestaurantRequest updatedRestaurant) throws Exception {
         Restaurant restaurant = findRestaurantById(restaurantId);
-
         if(restaurant.getCuisineType() != null){
             restaurant.setCuisineType(updatedRestaurant.getCuisineType());
         }
@@ -60,15 +56,12 @@ public class RestaurantServiceImpl implements RestaurantService{
         if(restaurant.getName() != null){
             restaurant.setName(updatedRestaurant.getName());
         }
-
-
         return restaurantRepository.save(restaurant);
     }
 
     @Override
     public void deleteRestaurant(Long restaurantId) throws Exception {
         Restaurant restaurant = findRestaurantById(restaurantId);
-
         restaurantRepository.delete(restaurant);
     }
 
@@ -96,11 +89,9 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public Restaurant getRestaurantByUserId(Long userId) throws Exception {
        Restaurant restaurant = restaurantRepository.findByOwnerId(userId);
-
         if(restaurant == null){
             throw new Exception("Restaurant not found with owner id" + userId);
         }
-
         return restaurant;
     }
 
@@ -119,10 +110,7 @@ public class RestaurantServiceImpl implements RestaurantService{
         for (RestaurantDto favorite: favorites){
             if(favorite.getId().equals(restaurantId)){
                 isFavorited = true;
-                break;
-            }
-        }
-
+                break;}}
         if(isFavorited){
             favorites.removeIf(favorite -> favorite.getId().equals(restaurantId));
         }else{
@@ -135,10 +123,7 @@ public class RestaurantServiceImpl implements RestaurantService{
     @Override
     public Restaurant updateRestaurantStatus(Long id) throws Exception {
         Restaurant restaurant = findRestaurantById(id);
-
         restaurant.setOpen(!restaurant.isOpen());
-
-
         return restaurantRepository.save(restaurant);
     }
 }
